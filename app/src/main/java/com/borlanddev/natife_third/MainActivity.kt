@@ -25,11 +25,11 @@ class MainActivity : AppCompatActivity() {
         )
 
         binding.buttonChangeRadius.setOnClickListener {
-            binding.customView.setRadius(Random.nextInt(20, 100))
+            binding.customView.setRadius(Random.nextInt(10, 200).toFloat())
         }
 
         binding.buttonChangeThickness.setOnClickListener {
-            binding.customView.setThickness(Random.nextInt(20, 100))
+            binding.customView.setThickness(Random.nextInt(10 , 100).toFloat())
         }
 
         binding.buttonChangeColor.setOnClickListener {
@@ -37,5 +37,6 @@ class MainActivity : AppCompatActivity() {
                 colors[Random.nextInt(colors.size - 1)]
             )
         }
+
     }
 }

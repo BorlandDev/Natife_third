@@ -6,119 +6,129 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
-import kotlin.properties.Delegates
+import java.lang.Integer.min
 
-class CustomView(
+class CustomView @JvmOverloads constructor(
     context: Context,
-    attributesSet: AttributeSet?,
-    defStyleAttr: Int,
-    defStyleRes: Int
-) : View(context, attributesSet, defStyleAttr, defStyleRes) {
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : View(context, attrs, defStyle) {
 
-    private var roundingRadius by Delegates.notNull<Int>()
-    private var thicknessLine by Delegates.notNull<Int>()
-    private var colorLine by Delegates.notNull<Int>()
-    private var rectPaint: Paint? = null
-    private var rect = RectF(200f, 150f, 890f, 1800f)
-
-    constructor(context: Context, attributesSet: AttributeSet?, defStyleAttr: Int) : this(
-        context,
-        attributesSet,
-        defStyleAttr,
-        R.style.DefaultCustomViewStyle
-    )
-
-    constructor(context: Context, attributesSet: AttributeSet?)
-            : this(context, attributesSet, R.attr.customViewStyle)
-
-    constructor(context: Context) : this(context, null)
+    private var roundingRadius: Float = 0f
+    private var thicknessLine: Float = 0f
+    private var colorLine: Int = 0
+    private var rectPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = THICKNESS_LINE_DEF
+        color = COLOR_LINE_DEF
+    }
+    private val rect = RectF(0f,0f,0f,0f)
 
     init {
-        if (attributesSet != null) {
-            initAttributes(attributesSet, defStyleAttr, defStyleRes)
-        } else {
-            initDefaultAttributes()
+        if (attrs != null) {
+            initAttributes(attrs)
         }
         initPaints()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        rectPaint?.let {
+        rectPaint.let {
             canvas.drawRoundRect(
                 rect,
-                roundingRadius.toFloat(),
-                roundingRadius.toFloat(),
+                roundingRadius,
+                roundingRadius,
                 it
             )
         }
     }
+    // договариваемся с компоновщиком о наших размерах , он хочет измерять нашу вью
+    // вьюха должна сопоставить свои предполагаемые размеры с размерами которые предоставляет компоновщик
+    // и в финале уже сообщить - какого размера она будет
 
-    fun setRadius(value: Int) {
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val width = MeasureSpec.getSize(widthMeasureSpec)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+
+        val height = MeasureSpec.getSize(heightMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+
+        //val measuredWidth = rect.width() + paddingLeft + paddingRight
+        //val measuredHeight = rect.height() + paddingTop + paddingBottom
+
+        val resultWidth = when (widthMode) {
+            MeasureSpec.EXACTLY -> width
+            //MeasureSpec.AT_MOST -> min(width, measuredWidth.toInt())
+            else -> WIDTH_DEF
+        }
+        val resultHeight = when (heightMode) {
+            MeasureSpec.EXACTLY -> height
+            //MeasureSpec.AT_MOST -> min(height, measuredHeight.toInt())
+            else -> HEIGHT_DEF
+        }
+        /* if (resultHeight.toFloat() < measuredHeight || resultWidth.toFloat() < measuredWidth) {
+             Log.e(CustomView::class.java.name,
+                 "View's height is smaller than it's required to draw the content. It might be cropped"    )}*/
+
+        rect.set(0f,0f,resultWidth.toFloat(),resultHeight.toFloat())
+
+        setMeasuredDimension(resultWidth.toInt() + paddingStart + paddingEnd,
+            resultHeight.toInt() + paddingTop + paddingBottom)
+    }
+
+
+    fun setRadius(value: Float) {
         roundingRadius = value
         invalidate()
     }
 
-    fun setThickness(value: Int) {
+    fun setThickness(value: Float) {
         thicknessLine = value
-        rectPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        rectPaint?.apply {
-            style = Paint.Style.STROKE
-            strokeWidth = value.toFloat()
-            color = colorLine
-        }
+        rectPaint.strokeWidth = value
         invalidate()
     }
 
     fun setColor(value: Int) {
         colorLine = value
-        rectPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        rectPaint?.apply {
-            style = Paint.Style.STROKE
-            strokeWidth = thicknessLine.toFloat()
-            color = value
-        }
+        rectPaint.color = value
         invalidate()
     }
 
-    private fun initAttributes(
-        attributesSet: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
-    ) {
-        val typedArray = context.obtainStyledAttributes(
-            attributesSet,
+    private fun initAttributes(attrs: AttributeSet?) {
+        context.theme.obtainStyledAttributes(
+            attrs,
             R.styleable.CustomView,
-            defStyleAttr,
-            defStyleRes
-        )
-        roundingRadius =
-            typedArray.getInt(R.styleable.CustomView_rounding_radius, ROUNDING_RADIUS_DEF)
-        thicknessLine =
-            typedArray.getInt(R.styleable.CustomView_thickness_line, THICKNESS_LINE_DEF)
-        colorLine = typedArray.getColor(R.styleable.CustomView_color_line, COLOR_LINE_DEF)
-
-        typedArray.recycle()
-    }
-
-    private fun initDefaultAttributes() {
-        roundingRadius = ROUNDING_RADIUS_DEF
-        thicknessLine = THICKNESS_LINE_DEF
-        colorLine = COLOR_LINE_DEF
+            0, 0
+        ).apply {
+            try {
+                roundingRadius =
+                    getDimension(R.styleable.CustomView_rounding_radius, ROUNDING_RADIUS_DEF)
+                thicknessLine =
+                    getDimension(R.styleable.CustomView_thickness_line, THICKNESS_LINE_DEF)
+                colorLine = getColor(R.styleable.CustomView_color_line, COLOR_LINE_DEF)
+            } finally {
+                recycle()
+            }
+        }
     }
 
     private fun initPaints() {
         rectPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        rectPaint?.apply {
+        rectPaint.apply {
             style = Paint.Style.STROKE
-            strokeWidth = thicknessLine.toFloat()
+            strokeWidth = thicknessLine
             color = colorLine
         }
     }
 
     companion object {
-        const val ROUNDING_RADIUS_DEF = 50
-        const val THICKNESS_LINE_DEF = 30
+        const val ROUNDING_RADIUS_DEF = 50f
+        const val THICKNESS_LINE_DEF = 30f
         const val COLOR_LINE_DEF = Color.GRAY
+        const val WIDTH_DEF = 400f
+        const val HEIGHT_DEF = 1000f
     }
 
 }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CustomView">
-        <attr name="rounding_radius" format="integer" />
-        <attr name="thickness_line" format="integer" />
+        <attr name="rounding_radius" format="dimension" />
+        <attr name="thickness_line" format="dimension" />
         <attr name="color_line" format="color" />
     </declare-styleable>
 
     <attr name="customViewStyle" format="reference"/>
-
 </resources>

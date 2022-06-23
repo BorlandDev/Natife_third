@@ -17,8 +17,8 @@
     </style>
 
     <style name="DefaultCustomViewStyle">
-        <item name="rounding_radius">45</item>
-        <item name="thickness_line">40</item>
+        <item name="rounding_radius">45dp</item>
+        <item name="thickness_line">40dp</item>
         <item name="color_line">#000000</item>
     </style>
 
