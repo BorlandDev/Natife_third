@@ -44,9 +44,6 @@ class CustomView @JvmOverloads constructor(
             )
         }
     }
-    // договариваемся с компоновщиком о наших размерах , он хочет измерять нашу вью
-    // вьюха должна сопоставить свои предполагаемые размеры с размерами которые предоставляет компоновщик
-    // и в финале уже сообщить - какого размера она будет
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.getSize(widthMeasureSpec)
@@ -55,29 +52,25 @@ class CustomView @JvmOverloads constructor(
         val height = MeasureSpec.getSize(heightMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
 
-        //val measuredWidth = rect.width() + paddingLeft + paddingRight
-        //val measuredHeight = rect.height() + paddingTop + paddingBottom
-
         val resultWidth = when (widthMode) {
             MeasureSpec.EXACTLY -> width
-            //MeasureSpec.AT_MOST -> min(width, measuredWidth.toInt())
             else -> WIDTH_DEF
         }
         val resultHeight = when (heightMode) {
             MeasureSpec.EXACTLY -> height
-            //MeasureSpec.AT_MOST -> min(height, measuredHeight.toInt())
             else -> HEIGHT_DEF
         }
-        /* if (resultHeight.toFloat() < measuredHeight || resultWidth.toFloat() < measuredWidth) {
-             Log.e(CustomView::class.java.name,
-                 "View's height is smaller than it's required to draw the content. It might be cropped"    )}*/
 
-        rect.set(0f,0f,resultWidth.toFloat(),resultHeight.toFloat())
+        // Проверка что мы не выходим за границы родителя (наши размеры меньше предлагаемых компоновщиком)
 
-        setMeasuredDimension(resultWidth.toInt() + paddingStart + paddingEnd,
-            resultHeight.toInt() + paddingTop + paddingBottom)
+        rect.set(
+            0f + paddingStart,
+            0f + paddingTop,
+            resultWidth.toFloat() - paddingEnd,
+            resultHeight.toFloat() - paddingBottom
+        )
+        setMeasuredDimension(resultWidth.toInt(), resultHeight.toInt())
     }
-
 
     fun setRadius(value: Float) {
         roundingRadius = value
