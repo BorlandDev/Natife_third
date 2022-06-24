@@ -6,9 +6,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import java.lang.Integer.min
+import kotlin.math.min
 
 class CustomView @JvmOverloads constructor(
     context: Context,
@@ -24,12 +23,10 @@ class CustomView @JvmOverloads constructor(
         strokeWidth = THICKNESS_LINE_DEF
         color = COLOR_LINE_DEF
     }
-    private val rect = RectF(0f,0f,0f,0f)
+    private val rect = RectF(0f, 0f, 0f, 0f)
 
     init {
-        if (attrs != null) {
-            initAttributes(attrs)
-        }
+        initAttributes(attrs)
         initPaints()
     }
 
@@ -52,16 +49,13 @@ class CustomView @JvmOverloads constructor(
         val height = MeasureSpec.getSize(heightMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
 
-        val resultWidth = when (widthMode) {
-            MeasureSpec.EXACTLY -> width
-            else -> WIDTH_DEF
-        }
-        val resultHeight = when (heightMode) {
-            MeasureSpec.EXACTLY -> height
-            else -> HEIGHT_DEF
-        }
+        var resultWidth = if (widthMode == MeasureSpec.EXACTLY) width else WIDTH_DEF
+        resultWidth =
+            if (widthMode == MeasureSpec.AT_MOST) min(width, resultWidth.toInt()) else WIDTH_DEF
 
-        // Проверка что мы не выходим за границы родителя (наши размеры меньше предлагаемых компоновщиком)
+        var resultHeight = if (heightMode == MeasureSpec.EXACTLY) width else HEIGHT_DEF
+        resultHeight =
+            if (heightMode == MeasureSpec.AT_MOST) min(height, resultHeight.toInt()) else HEIGHT_DEF
 
         rect.set(
             0f + paddingStart,
@@ -108,9 +102,7 @@ class CustomView @JvmOverloads constructor(
     }
 
     private fun initPaints() {
-        rectPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         rectPaint.apply {
-            style = Paint.Style.STROKE
             strokeWidth = thicknessLine
             color = colorLine
         }
@@ -120,8 +112,8 @@ class CustomView @JvmOverloads constructor(
         const val ROUNDING_RADIUS_DEF = 50f
         const val THICKNESS_LINE_DEF = 30f
         const val COLOR_LINE_DEF = Color.GRAY
-        const val WIDTH_DEF = 400f
-        const val HEIGHT_DEF = 1000f
+        const val WIDTH_DEF = 1000f
+        const val HEIGHT_DEF = 1800f
     }
 
 }
