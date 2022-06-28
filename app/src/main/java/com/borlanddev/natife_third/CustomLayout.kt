@@ -1,15 +1,15 @@
 package com.borlanddev.natife_third
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.borlanddev.natife_third.databinding.ActivityLayoutBinding
+import androidx.core.content.ContextCompat
 
 class CustomLayout @JvmOverloads constructor(
     context: Context,
@@ -17,28 +17,24 @@ class CustomLayout @JvmOverloads constructor(
     defStyle: Int = 0
 ) : LinearLayout(context, attrsLayout, defStyle) {
 
-    private val binding: ActivityLayoutBinding
-    private val params = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-    private val margin = MarginLayoutParams(8, 8)
-
     init {
-        val inflater = LayoutInflater.from(context)
-        inflater.inflate(R.layout.activity_layout, this, true)
-        binding = ActivityLayoutBinding.bind(this)
-
+        with(this) {
+            layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            orientation = VERTICAL
+        }
     }
 
     fun addItem(item: String) {
         val textView = TextView(context)
         with(textView) {
-            layoutParams = params
-            layoutParams = margin
+            layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
             textSize = 18f
+            text = item
+            gravity = Gravity.CENTER_HORIZONTAL
             setPadding(4, 4, 4, 4)
-            setTextColor(resources.getColor(R.color.white))
-            setBackgroundColor(resources.getColor(R.color.black))
+            setTextColor(ContextCompat.getColor(context, R.color.white))
+            setBackgroundColor(ContextCompat.getColor(context, R.color.black))
         }
-        addView(textView)
+        this.addView(textView)
     }
-
 }

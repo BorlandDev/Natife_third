@@ -5,4 +5,5 @@
     <string name="change_color_button">Color</string>
     <string name="go_to">Go to</string>
     <string name="create_text_view">Create text view</string>
+    <string name="add_text_view">Add text view</string>
 </resources>

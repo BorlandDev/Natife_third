@@ -14,16 +14,16 @@ class CustomView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : View(context, attrs, defStyle) {
 
-    private var roundingRadius: Float = ROUNDING_RADIUS_DEF
-    private var thicknessLine: Float = THICKNESS_LINE_DEF
-    private var colorLine: Int = COLOR_LINE_DEF
+    private var roundingRadius: Float? = null
+    private var thicknessLine: Float? = null
+    private var colorLine: Int? = null
     private var rectPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = THICKNESS_LINE_DEF
         color = COLOR_LINE_DEF
     }
     private val rect = RectF(0f, 0f, 0f, 0f)
-    private var rectPadding = thicknessLine * 0.5f
+    private var rectPadding: Float = 0f
 
     init {
         initAttributes(attrs)
@@ -35,8 +35,8 @@ class CustomView @JvmOverloads constructor(
         rectPaint.let {
             canvas.drawRoundRect(
                 rect,
-                roundingRadius,
-                roundingRadius,
+                roundingRadius ?: ROUNDING_RADIUS_DEF,
+                roundingRadius ?: ROUNDING_RADIUS_DEF,
                 it
             )
         }
@@ -72,6 +72,8 @@ class CustomView @JvmOverloads constructor(
     fun setThickness(value: Float) {
         thicknessLine = value
         rectPaint.strokeWidth = value
+        rectPadding = 0.5f * (thicknessLine ?: THICKNESS_LINE_DEF)
+        requestLayout()
         invalidate()
     }
 
@@ -93,6 +95,8 @@ class CustomView @JvmOverloads constructor(
                 thicknessLine =
                     getDimension(R.styleable.CustomView_thickness_line, THICKNESS_LINE_DEF)
                 colorLine = getColor(R.styleable.CustomView_color_line, COLOR_LINE_DEF)
+
+                rectPadding = 0.5f * thicknessLine!!
             } finally {
                 recycle()
             }
@@ -101,8 +105,8 @@ class CustomView @JvmOverloads constructor(
 
     private fun initPaints() {
         rectPaint.apply {
-            strokeWidth = thicknessLine
-            color = colorLine
+            strokeWidth = thicknessLine ?: THICKNESS_LINE_DEF
+            color = colorLine ?: COLOR_LINE_DEF
         }
     }
 
