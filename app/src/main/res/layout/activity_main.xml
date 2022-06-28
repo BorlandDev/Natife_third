@@ -9,21 +9,15 @@
 
     <com.borlanddev.natife_third.CustomView
         android:id="@+id/customView"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
         app:color_line="#000000"
         app:layout_constraintBottom_toTopOf="@id/button_change_thickness"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:rounding_radius="30dp"
-        app:thickness_line="15dp" />
+        app:thickness_line="20dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_change_radius"
@@ -39,8 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/button_change_thickness"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/customView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_change_thickness"
@@ -57,9 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/button_change_color"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/button_change_radius"
-
-        app:layout_constraintTop_toBottomOf="@id/customView" />
+        app:layout_constraintStart_toEndOf="@id/button_change_radius" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_change_color"
@@ -75,7 +66,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/button_change_thickness"
-        app:layout_constraintTop_toBottomOf="@id/customView" />
+        app:layout_constraintStart_toEndOf="@id/button_change_thickness" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

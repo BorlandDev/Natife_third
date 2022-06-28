@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import kotlin.math.min
 
 class CustomView @JvmOverloads constructor(
     context: Context,
@@ -15,15 +14,16 @@ class CustomView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : View(context, attrs, defStyle) {
 
-    private var roundingRadius: Float = 0f
-    private var thicknessLine: Float = 0f
-    private var colorLine: Int = 0
+    private var roundingRadius: Float = ROUNDING_RADIUS_DEF
+    private var thicknessLine: Float = THICKNESS_LINE_DEF
+    private var colorLine: Int = COLOR_LINE_DEF
     private var rectPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = THICKNESS_LINE_DEF
         color = COLOR_LINE_DEF
     }
     private val rect = RectF(0f, 0f, 0f, 0f)
+    private var rectPadding = thicknessLine * 0.5f
 
     init {
         initAttributes(attrs)
@@ -45,25 +45,23 @@ class CustomView @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.getSize(widthMeasureSpec)
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
-
         val height = MeasureSpec.getSize(heightMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
 
-        var resultWidth = if (widthMode == MeasureSpec.EXACTLY) width else WIDTH_DEF
-        resultWidth =
-            if (widthMode == MeasureSpec.AT_MOST) min(width, resultWidth.toInt()) else WIDTH_DEF
-
-        var resultHeight = if (heightMode == MeasureSpec.EXACTLY) width else HEIGHT_DEF
-        resultHeight =
-            if (heightMode == MeasureSpec.AT_MOST) min(height, resultHeight.toInt()) else HEIGHT_DEF
+        val resultWidth = if (widthMode == MeasureSpec.EXACTLY) width else WIDTH_DEF
+        val resultHeight = if (heightMode == MeasureSpec.EXACTLY) height else HEIGHT_DEF
 
         rect.set(
-            0f + paddingStart,
-            0f + paddingTop,
-            resultWidth.toFloat() - paddingEnd,
-            resultHeight.toFloat() - paddingBottom
+            paddingStart.toFloat() + rectPadding,
+            paddingTop.toFloat() + rectPadding,
+            resultWidth.toFloat() - paddingEnd - rectPadding,
+            resultHeight.toFloat() - paddingBottom - rectPadding
         )
-        setMeasuredDimension(resultWidth.toInt(), resultHeight.toInt())
+
+        setMeasuredDimension(
+            resultWidth.toInt(),
+            resultHeight.toInt()
+        )
     }
 
     fun setRadius(value: Float) {
@@ -110,10 +108,10 @@ class CustomView @JvmOverloads constructor(
 
     companion object {
         const val ROUNDING_RADIUS_DEF = 50f
-        const val THICKNESS_LINE_DEF = 30f
+        const val THICKNESS_LINE_DEF = 100f
         const val COLOR_LINE_DEF = Color.GRAY
-        const val WIDTH_DEF = 1000f
-        const val HEIGHT_DEF = 1800f
+        const val WIDTH_DEF = 400f
+        const val HEIGHT_DEF = 800f
     }
 
 }
