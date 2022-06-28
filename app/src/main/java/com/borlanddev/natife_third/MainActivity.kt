@@ -1,5 +1,6 @@
 package com.borlanddev.natife_third
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -37,5 +38,11 @@ class MainActivity : AppCompatActivity() {
                 colors[Random.nextInt(colors.size - 1)]
             )
         }
+
+        binding.buttonGo.setOnClickListener {
+            val intent = Intent(this, LayoutActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }

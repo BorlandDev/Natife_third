@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Natife_third</string>
-    <string name="change_radius">Change radius</string>
-    <string name="change_thickness">Change thickness</string>
-    <string name="change_color_button">Change color</string>
+    <string name="change_radius">Radius</string>
+    <string name="change_thickness">Thickness</string>
+    <string name="change_color_button">Color</string>
+    <string name="go_to">Go to</string>
+    <string name="create_text_view">Create text view</string>
 </resources>

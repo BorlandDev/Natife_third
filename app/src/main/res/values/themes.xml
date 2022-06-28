@@ -13,8 +13,6 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
-        <item name="android:textViewStyle">@style/def_textView</item>
-
     </style>
 
     <style name="DefaultCustomViewStyle">
@@ -23,12 +21,6 @@
         <item name="color_line">#000000</item>
     </style>
 
-    <style name="def_textView">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:background">#000000</item>
-        <item name="android:padding">4dp</item>
-    </style>
 
 
 </resources>
