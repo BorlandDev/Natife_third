@@ -17,18 +17,13 @@ class CustomView @JvmOverloads constructor(
     private var roundingRadius: Float = ROUNDING_RADIUS_DEF
     private var thicknessLine: Float = THICKNESS_LINE_DEF
     private var colorLine: Int = COLOR_LINE_DEF
-    private val rectPaint: Paint
-        get() = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val rectPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = thicknessLine
         color = colorLine
     }
     private val rect = RectF(0f, 0f, 0f, 0f)
     private var rectPadding: Float = 0f
-    set(value) {
-       field = value
-       //requestLayout()
-    }
 
 
     init {
@@ -77,6 +72,7 @@ class CustomView @JvmOverloads constructor(
         thicknessLine = value
         rectPaint.strokeWidth = value
         rectPadding = value * 0.5f
+        rectSet(rectPadding)
         invalidate()
     }
 
@@ -100,6 +96,7 @@ class CustomView @JvmOverloads constructor(
                 colorLine = getColor(R.styleable.CustomView_color_line, COLOR_LINE_DEF)
 
                 rectPadding = thicknessLine * 0.5f
+                rectSet(rectPadding)
             } finally {
                 recycle()
             }
@@ -111,6 +108,15 @@ class CustomView @JvmOverloads constructor(
             strokeWidth = thicknessLine
             color = colorLine
         }
+    }
+
+    private fun rectSet(rectPadding: Float) {
+        rect.set(
+            paddingStart.toFloat() + rectPadding,
+            paddingTop.toFloat() + rectPadding,
+            width.toFloat() - paddingEnd - rectPadding,
+            height.toFloat() - paddingBottom - rectPadding
+        )
     }
 
     companion object {
