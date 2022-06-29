@@ -20,7 +20,6 @@ class CustomLayout @JvmOverloads constructor(
         with(this) {
             orientation = VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
-            setPadding(8,8,8,8)
         }
     }
 

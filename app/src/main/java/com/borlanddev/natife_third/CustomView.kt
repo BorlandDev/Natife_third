@@ -14,9 +14,9 @@ class CustomView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : View(context, attrs, defStyle) {
 
-    private var roundingRadius: Float? = null
-    private var thicknessLine: Float? = null
-    private var colorLine: Int? = null
+    private var roundingRadius: Float = ROUNDING_RADIUS_DEF
+    private var thicknessLine: Float = THICKNESS_LINE_DEF
+    private var colorLine: Int = COLOR_LINE_DEF
     private var rectPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = THICKNESS_LINE_DEF
@@ -32,14 +32,12 @@ class CustomView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        rectPaint.let {
-            canvas.drawRoundRect(
-                rect,
-                roundingRadius ?: ROUNDING_RADIUS_DEF,
-                roundingRadius ?: ROUNDING_RADIUS_DEF,
-                it
-            )
-        }
+        canvas.drawRoundRect(
+            rect,
+            roundingRadius,
+            roundingRadius,
+            rectPaint
+        )
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -72,7 +70,7 @@ class CustomView @JvmOverloads constructor(
     fun setThickness(value: Float) {
         thicknessLine = value
         rectPaint.strokeWidth = value
-        rectPadding = 0.5f * (thicknessLine ?: THICKNESS_LINE_DEF)
+        rectPadding = 0.5f * thicknessLine
         requestLayout()
         invalidate()
     }
@@ -96,7 +94,7 @@ class CustomView @JvmOverloads constructor(
                     getDimension(R.styleable.CustomView_thickness_line, THICKNESS_LINE_DEF)
                 colorLine = getColor(R.styleable.CustomView_color_line, COLOR_LINE_DEF)
 
-                rectPadding = 0.5f * thicknessLine!!
+                rectPadding = 0.5f * thicknessLine
             } finally {
                 recycle()
             }
@@ -105,8 +103,8 @@ class CustomView @JvmOverloads constructor(
 
     private fun initPaints() {
         rectPaint.apply {
-            strokeWidth = thicknessLine ?: THICKNESS_LINE_DEF
-            color = colorLine ?: COLOR_LINE_DEF
+            strokeWidth = thicknessLine
+            color = colorLine
         }
     }
 

@@ -7,8 +7,8 @@ class LayoutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val customLayout = CustomLayout(this)
-        setContentView(customLayout)
+        setContentView(R.layout.activity_layout)
+        val customLayout = findViewById<CustomLayout>(R.id.customLayout)
 
         with(customLayout) {
             addItem("Тест")
