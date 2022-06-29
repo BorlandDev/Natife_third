@@ -17,13 +17,19 @@ class CustomView @JvmOverloads constructor(
     private var roundingRadius: Float = ROUNDING_RADIUS_DEF
     private var thicknessLine: Float = THICKNESS_LINE_DEF
     private var colorLine: Int = COLOR_LINE_DEF
-    private var rectPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val rectPaint: Paint
+        get() = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = THICKNESS_LINE_DEF
-        color = COLOR_LINE_DEF
+        strokeWidth = thicknessLine
+        color = colorLine
     }
     private val rect = RectF(0f, 0f, 0f, 0f)
     private var rectPadding: Float = 0f
+    set(value) {
+       field = value
+       //requestLayout()
+    }
+
 
     init {
         initAttributes(attrs)
@@ -70,8 +76,7 @@ class CustomView @JvmOverloads constructor(
     fun setThickness(value: Float) {
         thicknessLine = value
         rectPaint.strokeWidth = value
-        rectPadding = 0.5f * thicknessLine
-        requestLayout()
+        rectPadding = value * 0.5f
         invalidate()
     }
 
@@ -94,7 +99,7 @@ class CustomView @JvmOverloads constructor(
                     getDimension(R.styleable.CustomView_thickness_line, THICKNESS_LINE_DEF)
                 colorLine = getColor(R.styleable.CustomView_color_line, COLOR_LINE_DEF)
 
-                rectPadding = 0.5f * thicknessLine
+                rectPadding = thicknessLine * 0.5f
             } finally {
                 recycle()
             }
@@ -115,5 +120,4 @@ class CustomView @JvmOverloads constructor(
         const val WIDTH_DEF = 400f
         const val HEIGHT_DEF = 800f
     }
-
 }

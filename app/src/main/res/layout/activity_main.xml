@@ -10,7 +10,7 @@
     <com.borlanddev.natife_third.CustomView
         android:id="@+id/customView"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
         app:color_line="#000000"
         app:layout_constraintBottom_toTopOf="@id/button_change_thickness"
         app:layout_constraintEnd_toEndOf="parent"

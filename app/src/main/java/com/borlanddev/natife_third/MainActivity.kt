@@ -43,6 +43,5 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LayoutActivity::class.java)
             startActivity(intent)
         }
-
     }
 }

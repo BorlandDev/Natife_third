@@ -5,6 +5,4 @@
         <attr name="thickness_line" format="dimension" />
         <attr name="color_line" format="color" />
     </declare-styleable>
-
-    <attr name="customViewStyle" format="reference"/>
 </resources>
